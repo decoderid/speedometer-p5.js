@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.0/lib/p5.min.js"></script>
+    <script>
+let labels = [0, 5, 10, 100, 500, 1000];
+let currentValue = 0;
+let maxValue = 1000;
+let minValue = 0;
+
+function setup() {
+  createCanvas(400, 400);
+  angleMode(DEGREES);
+}
+
+function draw() {
+  background(255);
+  
+  let centerX = width / 2;
+  let centerY = height * 0.75;
+  let radius = 150;
+  let startAngle = -180;
+  let endAngle = 0;
+
+  noFill();
+  stroke(0);
+  strokeWeight(4);
+  arc(centerX, centerY, radius * 2, radius * 2, startAngle, endAngle);
+  
+  let progressAngle = map(currentValue, minValue, maxValue, startAngle, endAngle);
+  stroke(0, 255, 0);
+  strokeWeight(8);
+  arc(centerX, centerY, radius * 2, radius * 2, startAngle, progressAngle);
+  
+  strokeWeight(2);
+  for (let i = 0; i < labels.length; i++) {
+    let angle = map(i, 0, labels.length - 1, startAngle, endAngle);
+    let xOuter = centerX + cos(angle) * radius;
+    let yOuter = centerY + sin(angle) * radius;
+    let xInner = centerX + cos(angle) * (radius - 15);
+    let yInner = centerY + sin(angle) * (radius - 15);
+    
+    line(xOuter, yOuter, xInner, yInner);
+    
+    let labelX = centerX + cos(angle) * (radius - 35);
+    let labelY = centerY + sin(angle) * (radius - 35);
+    textAlign(CENTER, CENTER);
+    textSize(12);
+    fill(0);
+    text(labels[i], labelX, labelY);
+  }
+
+  textAlign(CENTER, CENTER);
+  textSize(32);
+  fill(0);
+  text(currentValue + " Mbps", centerX, centerY - 20); 
+  
+  currentValue += 1; 
+  if (currentValue > maxValue) {
+    currentValue = 0; 
+  }
+}
+
+    </script>
+    <meta charset="utf-8" />
+
+  </head>
+  <body>
+  </body>
+</html>
